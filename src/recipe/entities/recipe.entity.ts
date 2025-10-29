@@ -30,11 +30,17 @@ export class Recipe {
   @Column()
   name: string;
 
+  @Column({ nullable: true })
+  portionSize?: string;
+
+  @Column({ nullable: true })
+  duration?: string;
+
   @Column({ type: 'enum', enum: MealType })
   mealType: MealType;
 
   @Column({ type: 'text', nullable: true })
-  preparation?: string;
+  instructions?: string;
 
   @OneToMany(() => Ingredient, (ingredient) => ingredient.recipe, { cascade: true, eager: true })
   ingredients: Ingredient[];

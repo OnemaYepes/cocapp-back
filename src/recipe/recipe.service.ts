@@ -19,8 +19,10 @@ export class RecipeService {
     const recipe = this.recipeRepo.create({
       userId,
       name: dto.name,
+      duration: dto.duration,
+      portionSize: dto.portionSize,
       mealType: dto.mealType,
-      preparation: dto.preparation,
+      instructions: dto.instructions,
     });
 
     if (dto.ingredients && dto.ingredients.length) {
@@ -56,7 +58,7 @@ export class RecipeService {
     return this.recipeRepo.find({
       where: [
         { userId, name: ILike(`%${q}%`) },
-        { userId, preparation: ILike(`%${q}%`) },
+        { userId, instructions: ILike(`%${q}%`) },
       ],
       relations: ['ingredients'],
       order: { createdAt: 'DESC' },
@@ -68,7 +70,7 @@ export class RecipeService {
 
     if (dto.name !== undefined) recipe.name = dto.name;
     if (dto.mealType !== undefined) recipe.mealType = dto.mealType;
-    if (dto.preparation !== undefined) recipe.preparation = dto.preparation;
+    if (dto.instructions !== undefined) recipe.instructions = dto.instructions;
 
     if (dto.ingredients) {
       await this.ingredientRepo.createQueryBuilder().delete().where('"recipeId" = :rid', { rid: recipe.id }).execute();

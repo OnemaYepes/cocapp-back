@@ -30,12 +30,15 @@ export class CreateRecipeDto {
   preparation?: string;
 
   @IsString()
-  portionSize?: string;
+  duration: string;
+
+  @IsString()
+  portionSize: string;
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => IngredientDto)
-  ingredients?: IngredientDto[];
+  ingredients: IngredientDto[];
 
   @IsOptional()
   @IsString()
