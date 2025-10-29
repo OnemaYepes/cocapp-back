@@ -52,14 +52,12 @@ export class MealPlanService {
     return { deleted: true };
   }
 
-  // week returns assignments for the week containing 'date' (week starting Monday)
   async weekForDate(userId: string, dateStr: string) {
     const date = new Date(dateStr);
-    const day = date.getDay(); // 0 Sun .. 6 Sat
-    const diffToMonday = (day + 6) % 7; // days to subtract to get Monday
+    const day = date.getDay();
+    const diffToMonday = (day + 6) % 7;
     const monday = new Date(date);
     monday.setDate(date.getDate() - diffToMonday);
-    // build yyyy-mm-dd strings
     const start = monday.toISOString().slice(0, 10);
     const endDate = new Date(monday);
     endDate.setDate(monday.getDate() + 6);

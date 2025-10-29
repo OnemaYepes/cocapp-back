@@ -37,18 +37,15 @@ export class ShoppingService {
     end.setDate(new Date(weekStart).getDate() + 6);
     const endStr = end.toISOString().slice(0, 10);
 
-    // get assignments in week
     const assignments = await this.mpRepo.find({
       where: { userId, date: Between(weekStart, endStr) },
       relations: ['recipe'],
     });
 
-    // accumulate ingredients
-    type Key = string; // name|unit
+    type Key = string;
     const map = new Map<Key, { name: string; unit?: string; quantity: number }>();
     for (const a of assignments) {
       if (!a.recipe) continue;
-      // ensure ingredients loaded
       const recipe = await this.recipeRepo.findOne({ where: { id: a.recipe.id }, relations: ['ingredients'] });
       if (!recipe) continue;
       for (const ing of recipe.ingredients || []) {
@@ -60,10 +57,8 @@ export class ShoppingService {
       }
     }
 
-    // upsert shopping_list_items for this user+weekStart
     const items: ShoppingListItem[] = [];
     for (const [key, val] of map) {
-      // try to find existing item for user/weekStart/name/unit
       let existing = await this.itemRepo.findOne({ where: { userId, weekStart, name: val.name, unit: val.unit } });
       if (existing) {
         existing.quantity = (Number(existing.quantity || 0) + val.quantity) as any;
@@ -96,7 +91,6 @@ export class ShoppingService {
   async exportWeek(userId: string, dateStr: string) {
     const weekStart = this.getWeekStart(dateStr);
     const items = await this.itemRepo.find({ where: { userId, weekStart }, order: { name: 'ASC' } });
-    // simple text export — name x qty unit [bought]
     const lines = items.map((i) => `${i.name} ${i.quantity ?? ''} ${i.unit ?? ''} ${i.bought ? '[✔]' : ''}`.trim());
     return lines.join('\n');
   }

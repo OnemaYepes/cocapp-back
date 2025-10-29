@@ -8,7 +8,7 @@ import { AuthService } from '../auth/auth.service';
 export class JwtGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
-    @Inject(AuthService) private readonly authService: AuthService, // para blacklist
+    @Inject(AuthService) private readonly authService: AuthService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -23,7 +23,6 @@ export class JwtGuard implements CanActivate {
 
     const token = parts[1];
 
-    // Check blacklist first (fast fail)
     if (this.authService.isBlacklisted(token)) {
       throw new UnauthorizedException('Token invalidado (logout)');
     }
@@ -35,7 +34,6 @@ export class JwtGuard implements CanActivate {
       (req as any).user = { id: payload.sub, email: payload.email, name: payload.name };
       return true;
     } catch (err) {
-      // TEMPORAL: loguea error concreto para diagnóstico
       console.error('JWT verify error:', err);
       if (err.name === 'TokenExpiredError') {
         throw new UnauthorizedException('Token expirado');

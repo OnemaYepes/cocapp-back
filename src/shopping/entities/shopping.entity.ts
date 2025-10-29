@@ -9,7 +9,6 @@ export class ShoppingListItem {
   @Column()
   userId: string;
 
-  // weekStart saved as YYYY-MM-DD (Monday)
   @Column({ type: 'date' })
   weekStart: string;
 

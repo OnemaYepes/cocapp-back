@@ -9,12 +9,11 @@ export class MealPlanAssignment {
   @Column()
   userId: string;
 
-  // fecha simple (YYYY-MM-DD) guardada como date
   @Column({ type: 'date' })
   date: string;
 
   @Column()
-  mealType: string; // match con MealType enum string
+  mealType: string;
 
   @ManyToOne(() => Recipe, { eager: true, onDelete: 'SET NULL', nullable: true })
   @JoinColumn({ name: 'recipe_id' })

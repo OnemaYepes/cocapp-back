@@ -3,7 +3,7 @@ import { MealType } from 'src/recipe/entities/meal-type.enum';
 
 
 export class CreateMealPlanDto {
-  @IsDateString() // expects YYYY-MM-DD or ISO
+  @IsDateString()
   date: string;
 
   @IsEnum(MealType)

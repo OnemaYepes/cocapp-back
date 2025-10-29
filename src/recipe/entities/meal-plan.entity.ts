@@ -9,7 +9,6 @@ export class MealPlan {
   @Column()
   name: string;
 
-  // relation many-to-many
   @ManyToMany(() => Recipe, (recipe) => recipe.mealPlans, { cascade: false })
   @JoinTable({
     name: 'meal_plan_recipes',

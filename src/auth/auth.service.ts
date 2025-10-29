@@ -1,4 +1,3 @@
-// src/auth/auth.service.ts
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -9,7 +8,6 @@ import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
-  // Blacklist en memoria (ejemplo). En prod usar Redis con TTL.
   private tokenBlacklist = new Set<string>();
 
   constructor(

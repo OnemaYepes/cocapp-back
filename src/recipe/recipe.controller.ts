@@ -37,11 +37,9 @@ export class RecipeController {
   }
 
   @Get()
-  async findAll(@Req() req: AuthenticatedRequest, @Query('page') page = '1', @Query('limit') limit = '20') {
+  async findAll(@Req() req: AuthenticatedRequest) {
     const userId = req.user.id;
-    const p = parseInt(page, 10);
-    const l = parseInt(limit, 10);
-    return this.recipeService.findByUserPaged(userId, p, l);
+    return this.recipeService.findByUser(userId);
   }
 
   @Get('search')
